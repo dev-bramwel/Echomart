@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'products',
     'vendors',
     'payments',
-    "corsheaders",
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +46,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS =[
-    'http://localhost:3000'
+    'http://localhost:3000',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
