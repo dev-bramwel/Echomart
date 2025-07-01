@@ -99,6 +99,5 @@ celerybeat-schedule
 *.log
 *.pid
 *.sock
-*.pyc
 .pytest_cache/
 .ruff_cache/
