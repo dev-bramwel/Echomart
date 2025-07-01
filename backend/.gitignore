@@ -1,0 +1,104 @@
+# Byte-code files
+*.pyc
+__pycache__/
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Database
+*.sqlite3
+*.db.sqlite3
+
+# Media and static files (if not managed by version control)
+/media/
+/static/
+
+# IDE-specific files
+.idea/                  # PyCharm
+.vscode/                # VS Code
+*.sublime-project       # Sublime Text
+*.sublime-workspace
+.DS_Store               # macOS
+
+# Operating System files
+Thumbs.db               # Windows
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+.coverage.*
+.cache/
+
+# Sphinx documentation
+docs/_build/
+
+# Celery beat schedule file
+celerybeat-schedule
+
+# Environment variables
+.env
+.flaskenv
+.settings.ini
+
+# Debugging and logs
+*.log
+*.pot
+*.mo
+*.swp
+*.bak
+*.swo
+*~
+.webassets-cache
+.coverage
+.tox/
+.nox/
+.pyre/
+*.py[cod]
+*$py.class
+.env
+.env.local
+.DS_Store
+*.seed
+*.log
+*.pid
+*.sock
+*.pyc
+.pytest_cache/
+.ruff_cache/
