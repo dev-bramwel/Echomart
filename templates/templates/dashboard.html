@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vendor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        nav {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .stats {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            width: fit-content;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ Navbar -->
+    <nav>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    <h1>Welcome to the Vendor Dashboard</h1>
+    <p>Hello, {{ user.username }}!</p>
+
+    {% if vendor %}
+        <h2>Shop Name: {{ vendor.shop_name }}</h2>
+        <p>Phone: {{ vendor.phone }}</p>
+
+        <!-- ✅ Stats Section -->
+        <div class="stats">
+            <h3>Vendor Stats</h3>
+            <ul>
+                <li>Total Orders: {{ total_orders }}</li>
+                <li>Total Revenue: ${{ total_revenue }}</li>
+            </ul>
+        </div>
+    {% else %}
+        <p>No vendor profile found.</p>
+    {% endif %}
+
+</body>
+</html>
+
