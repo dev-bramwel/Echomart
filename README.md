@@ -192,6 +192,66 @@ npm test
    git push origin feature/your-feature-name
    ```
 
+### 🔄 Git Collaboration Guidelines
+
+#### Pull Request & Review Process
+
+**⚠️ IMPORTANT:** All merges to the `master` branch require at least **2 reviewers** before merging.
+
+1. **Creating a Pull Request:**
+
+   - Push your feature branch to GitHub
+   - Create a Pull Request from your branch to `master`
+   - Add a clear title and description of your changes
+   - Request reviews from at least 2 team members
+
+2. **Required Reviewers:**
+
+   - At least one technical reviewer (Bramwel, Masira, Eddie, or Xvira)
+   - GitHub Copilot suggestions (when available)
+   - Any other team member familiar with the changed code
+
+3. **Review Checklist:**
+   - [ ] Code follows project style guidelines
+   - [ ] All tests pass
+   - [ ] No breaking changes to existing functionality
+   - [ ] Documentation updated if needed
+   - [ ] Security considerations addressed
+
+#### Pulling Changes from GitHub
+
+To stay up-to-date with the latest changes from any branch:
+
+```bash
+# Pull changes from the main branch
+git pull origin main
+
+# Pull changes from a specific feature branch
+git pull origin feature/branch-name
+
+# Pull changes from any branch (replace <branchName> with actual branch name)
+git pull origin <branchName>
+```
+
+**Best Practices:**
+
+- Always pull the latest changes before starting new work
+- Pull frequently to avoid large merge conflicts
+- Communicate with your team when working on related features
+
+**Examples:**
+
+```bash
+# Pull latest backend changes
+git pull origin backend/api-improvements
+
+# Pull latest frontend changes
+git pull origin frontend/ui-components
+
+# Pull latest from development branch
+git pull origin development
+```
+
 ### 🐛 Troubleshooting
 
 **Common Issues:**
