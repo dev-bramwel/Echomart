@@ -5,19 +5,25 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .models import CustomUser, UserProfile
 from .serializers import (
-    UserSerializer, UserRegistrationSerializer, UserLoginSerializer,
+    UserSerializer, UserLoginSerializer,
     UserProfileUpdateSerializer, ChangePasswordSerializer
 )
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UserRegistrationSerializer
     permission_classes = [permissions.AllowAny]
 
+    def get_serializer_class(self):
+        from .serializers import UserRegistrationSerializer  # Delayed import
+        return UserRegistrationSerializer
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        
+        from .serializers import UserSerializer
+        refresh = RefreshToken.for_user(user)
         
         # Generate tokens
         refresh = RefreshToken.for_user(user)
@@ -44,6 +50,7 @@ def login_view(request):
     })
 
 @api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def logout_view(request):
     try:
         refresh_token = request.data.get('refresh')
