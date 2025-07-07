@@ -11,8 +11,8 @@ const Navbar = () => {
   return (
     <div className='navbar-container'>
         <div className="logo">
-          <h1>Echomart</h1>
           <img src={Echomart_logo} alt="" />
+          <h1>Echomart</h1>
         </div>
         <div className="nav-links">
           <ul>
