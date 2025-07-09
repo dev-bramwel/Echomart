@@ -1,5 +1,4 @@
 from pathlib import Path
-from django.urls import include
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,9 +15,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-urlpatterns = [
-    Path('api/accounts/', include('accounts.urls')),
-]
 # Application definition
 
 INSTALLED_APPS = [
