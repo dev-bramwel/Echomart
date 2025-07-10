@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import CustomUser, UserProfile
 
+
 # Serializer for displaying and updating user profile data
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,9 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'id', 'username', 'email', 'first_name', 'last_name',
-            'phone_number', 'date_of_birth', 'is_vendor',
-            'profile', 'password', 'created_at'
+            'id', 'email', 'full_name', 'phone_number',
+            'date_of_birth', 'is_vendor', 'profile', 'password', 'created_at'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -31,33 +31,27 @@ class UserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         user.set_password(password)
         user.save()
-        return user  # UserProfile is created by signal
+        return user
 
 
-# Serializer for registering new users (from frontend)
+# Serializer for registering new users
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
-    password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = [
-            'username', 'email', 'first_name', 'last_name',
-            'phone_number', 'password', 'password_confirm'
-        ]
-
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError("Passwords don't match")
-        return attrs
+        fields = ['email', 'full_name', 'phone_number', 'password']
 
     def create(self, validated_data):
-        validated_data.pop('password_confirm')
         password = validated_data.pop('password')
-        user = CustomUser.objects.create_user(**validated_data)
+        full_name = " ".join(validated_data['full_name'].strip().split())  # Normalize spacing
+        user = CustomUser.objects.create_user(
+            full_name=full_name,
+            **validated_data
+        )
         user.set_password(password)
         user.save()
-        return user  # Profile is handled by signal
+        return user
 
 
 # Serializer for login authentication
