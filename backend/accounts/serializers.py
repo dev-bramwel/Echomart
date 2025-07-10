@@ -17,9 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'id', 'username', 'email', 'first_name', 'last_name',
-            'phone_number', 'date_of_birth', 'is_vendor',
-            'profile', 'password', 'created_at'
+            'id', 'email', 'full_name', 'phone_number',
+            'date_of_birth', 'is_vendor', 'profile', 'password', 'created_at'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -31,33 +30,30 @@ class UserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         user.set_password(password)
         user.save()
-        return user  # UserProfile is created by signal
+        return user
 
 
-# Serializer for registering new users (from frontend)
+# Serializer for registering new users
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
-    password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = [
-            'username', 'email', 'first_name', 'last_name',
-            'phone_number', 'password', 'password_confirm'
-        ]
+        fields = ['email', 'full_name', 'phone_number', 'password']
 
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError("Passwords don't match")
-        return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password_confirm')
         password = validated_data.pop('password')
-        user = CustomUser.objects.create_user(**validated_data)
+        full_name = " ".join(validated_data['full_name'].strip().split())  # Normalize spacing
+        user = CustomUser.objects.create_user(
+            full_name=full_name,
+            **validated_data
+        )
         user.set_password(password)
         user.save()
-        return user  # Profile is handled by signal
+        return user
+
 
 
 # Serializer for login authentication
@@ -88,6 +84,21 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['bio', 'avatar', 'address', 'city', 'country', 'postal_code']
+        
+    username = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'full_name', 'phone_number', 'date_of_birth']
+
+    def validate_username(self, value):
+        if value == '':
+            return None  # treat blank as null
+
+        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.id).first()
+        if user:
+            raise serializers.ValidationError("This username is already taken.")
+        return value
 
 
 # Serializer for changing password
