@@ -33,6 +33,12 @@ class CustomUserManager(BaseUserManager):
 
 # Custom user model
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        blank=True,
+        null=True
+    )
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15, unique=True)

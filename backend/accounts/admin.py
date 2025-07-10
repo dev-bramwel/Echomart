@@ -11,9 +11,9 @@ class UserProfileInline(admin.StackedInline):
 class CustomUserAdmin(BaseUserAdmin):
     inlines = (UserProfileInline,)
     
-    list_display = ('email', 'full_name', 'phone_number', 'is_vendor', 'is_staff', 'created_at')
+    list_display = ('email', 'username','full_name', 'phone_number', 'is_vendor', 'is_staff', 'created_at')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_vendor', 'created_at')
-    search_fields = ('email', 'full_name', 'phone_number')
+    search_fields = ('email', 'full_name', 'phone_number', 'username')
     ordering = ('-created_at',)
 
     fieldsets = (

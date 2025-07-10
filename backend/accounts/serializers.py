@@ -82,6 +82,21 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['bio', 'avatar', 'address', 'city', 'country', 'postal_code']
+        
+    username = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'full_name', 'phone_number', 'date_of_birth']
+
+    def validate_username(self, value):
+        if value == '':
+            return None  # treat blank as null
+
+        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.id).first()
+        if user:
+            raise serializers.ValidationError("This username is already taken.")
+        return value
 
 
 # Serializer for changing password
