@@ -45,7 +45,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-        full_name = " ".join(validated_data['full_name'].strip().split())  # Normalize spacing
+        full_name = validated_data.pop('full_name', None)
+        full_name = " ".join(full_name.strip().split()) if full_name else None
+
         user = CustomUser.objects.create_user(
             full_name=full_name,
             **validated_data
@@ -53,6 +55,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
 
 
 
