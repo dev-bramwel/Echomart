@@ -37,6 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
+    phone_number = serializers.CharField(required=True)
+    full_name = serializers.CharField(required=True)
 
     class Meta:
         model = CustomUser
@@ -84,11 +86,16 @@ class UserLoginSerializer(serializers.Serializer):
 
 # Serializer for updating user profile (e.g., from frontend)
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField(read_only=True)
+    phone_number = serializers.CharField(source="user.phone_number")
     class Meta:
         model = UserProfile
-        fields = ['bio', 'avatar', 'address', 'city', 'country', 'postal_code']
-        
+        fields = ['phone_number', 'full_name', 'bio', 'avatar', 'address', 'city', 'country', 'postal_code']
     username = serializers.CharField(required=False, allow_blank=True)
+    
+    def get_full_name(self, obj):
+        return obj.full_name
+
 
     class Meta:
         model = CustomUser
@@ -102,7 +109,6 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         if user:
             raise serializers.ValidationError("This username is already taken.")
         return value
-
 
 # Serializer for updating CustomUser fields
 class CustomUserUpdateSerializer(serializers.ModelSerializer):

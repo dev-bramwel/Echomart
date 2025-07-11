@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     # API Endpoints
-    path('api/accounts/', include('accounts.urls')),
+    path('api/accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
     path('api/vendors/', include('vendors.urls')),
     path('api/products/', include('products.urls')),
     path('api/orders/', include('orders.urls')),

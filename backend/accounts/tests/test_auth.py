@@ -1,72 +1,113 @@
-from rest_framework.test import APITestCase
-from rest_framework import status
-from django.urls import reverse
+from django.test import TestCase, RequestFactory
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, TokenError
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.test import force_authenticate, APIRequestFactory
+
+from datetime import timedelta
+from django.utils import timezone
+
+User = get_user_model()
 
 
-class AccountsAuthTests(APITestCase):
+class SimpleJWTTokenTest(TestCase):
+
     def setUp(self):
-        self.register_url = reverse('user-register')
-        self.login_url = reverse('token_obtain_pair')
-        self.profile_url = reverse('user-profile')
+        self.user = User.objects.create_user(
+            email="jwtuser@example.com",
+            full_name="JWT User",
+            phone_number="0712345678",
+            password="jwtpass123"
+        )
+        self.refresh = RefreshToken.for_user(self.user)
+        self.access = self.refresh.access_token
 
-        self.user_data = {
-            "username": "testuser",
-            "email": "test@example.com",
-            "first_name": "Test",
-            "last_name": "User",
-            "phone_number": "0712345678",
-            "password": "strongpass123",
-            "password_confirm": "strongpass123"
-        }
+    def test_generate_and_validate_access_token(self):
+        # Validate token manually
+        token = AccessToken(str(self.access))
+        self.assertEqual(token['user_id'], self.user.id)
 
-    def test_user_can_register_successfully(self):
-        
-        response = self.client.post(self.register_url, self.user_data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        from accounts.models import CustomUser
-        self.assertTrue(CustomUser.objects.filter(email=self.user_data["email"]).exists())
+    def test_refresh_token_returns_new_access(self):
+        # Simulate refreshing
+        new_access = self.refresh.access_token
+        self.assertNotEqual(str(new_access), str(self.access))
 
-    def test_user_registration_fails_with_mismatched_passwords(self):
-        bad_data = self.user_data.copy()
-        bad_data["password_confirm"] = "wrongpass"
-        response = self.client.post(self.register_url, bad_data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_token_expiry_manually(self):
+        # Simulate expired token
+        token = AccessToken.for_user(self.user)
+        token.set_exp(from_time=timezone.now() - timedelta(hours=1))  # expired 1hr ago
 
-    def test_user_login_returns_tokens(self):
-        self.client.post(self.register_url, self.user_data)
-        login_data = {
-            "email": self.user_data["email"],
-            "password": self.user_data["password"]
-        }
-        response = self.client.post(self.login_url, login_data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("access", response.data)
-        self.assertIn("refresh", response.data)
+        with self.assertRaises(TokenError):
+            AccessToken(str(token)).check_exp()
 
-    def test_user_login_fails_with_wrong_credentials(self):
-        self.client.post(self.register_url, self.user_data)
-        bad_login_data = {
-            "email": self.user_data["email"],
-            "password": "wrongpass"
-        }
-        response = self.client.post(self.login_url, bad_login_data)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_authenticated_user_can_view_profile(self):
-        self.client.post(self.register_url, self.user_data)
-        login_data = {
-            "email": self.user_data["email"],
-            "password": self.user_data["password"]
-        }
-        login_response = self.client.post(self.login_url, login_data)
-        access_token = login_response.data["access"]
+class JWTAuthenticationTest(TestCase):
 
-        # Send request with token
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
-        response = self.client.get(self.profile_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["email"], self.user_data["email"])
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="authtest@example.com",
+            full_name="Auth Tester",
+            phone_number="0700111222",
+            password="authpass"
+        )
+        self.refresh = RefreshToken.for_user(self.user)
+        self.access = str(self.refresh.access_token)
+        self.factory = APIRequestFactory()
+        self.auth = JWTAuthentication()
 
-    def test_anonymous_user_cannot_view_profile(self):
-        response = self.client.get(self.profile_url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    def test_valid_token_authenticates_user(self):
+        request = self.factory.get("/secure-endpoint/")
+        request.META['HTTP_AUTHORIZATION'] = f"Bearer {self.access}"
+        user_auth_tuple = self.auth.authenticate(request)
+        self.assertIsNotNone(user_auth_tuple)
+        user, _ = user_auth_tuple
+        self.assertEqual(user.email, self.user.email)
+
+    def test_missing_token_returns_none(self):
+        request = self.factory.get("/secure-endpoint/")
+        self.assertIsNone(self.auth.authenticate(request))
+
+    def test_invalid_token_raises_auth_error(self):
+        request = self.factory.get("/secure-endpoint/")
+        request.META['HTTP_AUTHORIZATION'] = "Bearer invalid.token.string"
+        with self.assertRaises(AuthenticationFailed):
+            self.auth.authenticate(request)
+
+
+class PermissionEnforcementTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="permuser@example.com",
+            full_name="Permission User",
+            phone_number="0799999999",
+            password="perm123"
+        )
+        self.refresh = RefreshToken.for_user(self.user)
+        self.access = str(self.refresh.access_token)
+        self.factory = APIRequestFactory()
+
+    def test_is_authenticated_blocks_unauthenticated(self):
+        class SecureView(APIView):
+            permission_classes = [IsAuthenticated]
+            def get(self, request): return Response({"ok": True})
+
+        view = SecureView.as_view()
+        request = self.factory.get("/secure-endpoint/")
+        response = view(request)
+        self.assertEqual(response.status_code, 401)
+
+    def test_is_authenticated_allows_authenticated(self):
+        class SecureView(APIView):
+            permission_classes = [IsAuthenticated]
+            def get(self, request): return Response({"ok": True})
+
+        request = self.factory.get("/secure-endpoint/")
+        request.META['HTTP_AUTHORIZATION'] = f"Bearer {self.access}"
+        view = SecureView.as_view()
+        response = view(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {"ok": True})

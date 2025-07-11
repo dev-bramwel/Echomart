@@ -41,7 +41,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=15, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     is_vendor = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -61,6 +61,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 # User profile — keep as-is
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    full_name = models.CharField(max_length=255, blank=False)
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     address = models.TextField(blank=True)
