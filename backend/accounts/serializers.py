@@ -45,7 +45,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-        full_name = " ".join(validated_data['full_name'].strip().split())  # Normalize spacing
+
+        full_name = " ".join(validated_data.pop('full_name').strip().split())  # Normalize spacing
+
         user = CustomUser.objects.create_user(
             full_name=full_name,
             **validated_data
@@ -85,6 +87,24 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['bio', 'avatar', 'address', 'city', 'country', 'postal_code']
         
+    username = serializers.CharField(required=False, allow_blank=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'full_name', 'phone_number', 'date_of_birth']
+
+    def validate_username(self, value):
+        if value == '':
+            return None  # treat blank as null
+
+        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.id).first()
+        if user:
+            raise serializers.ValidationError("This username is already taken.")
+        return value
+
+
+# Serializer for updating CustomUser fields
+class CustomUserUpdateSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
