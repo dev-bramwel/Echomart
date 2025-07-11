@@ -45,7 +45,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-        full_name = " ".join(validated_data['full_name'].strip().split())  # Normalize spacing
+        full_name = " ".join(validated_data.pop('full_name').strip().split())  # Normalize spacing
         user = CustomUser.objects.create_user(
             full_name=full_name,
             **validated_data
@@ -84,7 +84,10 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['bio', 'avatar', 'address', 'city', 'country', 'postal_code']
-        
+
+
+# Serializer for updating CustomUser fields
+class CustomUserUpdateSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
