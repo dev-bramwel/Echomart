@@ -75,11 +75,14 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 class UserProfileUpdateView(generics.UpdateAPIView):
     serializer_class = UserProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated]
+    
+    def get_object(self):
+        return self.request.user.profile
 
     def get_object(self):
         profile, _ = UserProfile.objects.get_or_create(user=self.request.user)
         return profile
-
+    
 
 # ✅ Password change (old/new/confirm handled)
 @api_view(['POST'])
