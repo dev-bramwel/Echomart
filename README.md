@@ -111,11 +111,11 @@ Backend will run on [http://localhost:8000](http://localhost:8000)
 **Terminal 2 - Frontend (React):**
 
 ```bash
-cd frontend
-npm start
+cd vite-frontend
+npm run dev
 ```
 
-Frontend will run on [http://localhost:3000](http://localhost:3000)
+Frontend will run on [http://localhost:5173](http://localhost:5173)
 
 ### 🔧 Environment Variables
 
