@@ -10,6 +10,17 @@ Echomart is a simplified e-commerce platform built with Django and React. It is 
 echomart/
 ├── backend/                    # Django project: APIs, business logic, DB models
 │   ├── accounts/              # User authentication and profile management
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── signals.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   ├── migrations/        # Database migrations
+│   │   ├── tests/             # Unit tests
+│   │   └── __pycache__/
 │   ├── config/                # Django settings and main configuration
 │   ├── orders/                # Order management and processing
 │   ├── payments/              # Payment processing (M-PESA, Flutterwave)
@@ -17,17 +28,30 @@ echomart/
 │   ├── vendors/               # Vendor/seller management
 │   ├── templates/             # HTML templates
 │   ├── manage.py              # Django management script
-│   └── db.sqlite3             # SQLite database (development)
-├── frontend/                   # React project: UI components, pages, API integration
+│   ├── db.sqlite3             # SQLite database (development)
+│   ├── requirements.txt       # Backend Python dependencies
+│   └── .gitignore             # Backend Git ignore rules
+├── frontend/                   # Basic React project (legacy)
 │   ├── public/                # Static assets
 │   ├── src/                   # React source code
+│   ├── package.json           # Node.js dependencies
+│   ├── README.md              # Frontend documentation
+│   └── .gitignore             # Frontend Git ignore rules
+├── vite-frontend/             # Main Vite-based React frontend (active development)
+│   ├── public/                # Static assets and favicon
+│   ├── src/                   # React source code
 │   │   ├── Components/        # Reusable UI components
-│   │   ├── App.js             # Main app component
-│   │   └── index.js           # Entry point
-│   └── package.json           # Node.js dependencies
-├── vite-frontend/             # Alternative Vite-based React frontend
-├── requirements.txt           # Python dependencies
-└── README.md                  # This file
+│   │   │   └── Assets/        # Image assets and logos
+│   │   └── main.jsx           # Entry point for React app
+│   ├── index.html             # Main HTML template
+│   ├── package.json           # Node.js dependencies and scripts
+│   ├── vite.config.js         # Vite configuration
+│   ├── eslint.config.js       # ESLint configuration
+│   ├── README.md              # Vite frontend documentation
+│   └── .gitignore             # Frontend Git ignore rules
+├── requirements.txt           # Root Python dependencies
+├── README.md                  # This file - main project documentation
+└── .gitignore                 # Root Git ignore rules
 ```
 
 ---
@@ -93,7 +117,7 @@ echomart/
 
 5. **Install frontend dependencies:**
    ```bash
-   cd ../frontend
+   cd ../vite-frontend
    npm install
    ```
 
