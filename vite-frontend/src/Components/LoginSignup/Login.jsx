@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { userLogin } from "../../../api";
+import Cookies from "js-cookie";
 
 //styles
 import "./LoginSignup.css";
@@ -14,6 +16,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setError("");
@@ -34,8 +38,22 @@ const Login = () => {
       }
 
       response = await userLogin(formData);
-
       setSuccess("You have logged in succesfully!");
+
+      // Store user token in cookies (valid for 1 day)
+      Cookies.set("token", response.data.access, {
+        expires: 1,
+        secure: true,
+        sameSite: "Strict",
+      });
+      Cookies.set("id", response.data.id, {
+        expires: 1,
+        secure: true,
+        sameSite: "Strict",
+      });
+
+      window.dispatchEvent(new Event("authChanged"));
+      navigate("/");
     } catch (error) {
       let errorMessage = "Registration failed. Try again.";
 
