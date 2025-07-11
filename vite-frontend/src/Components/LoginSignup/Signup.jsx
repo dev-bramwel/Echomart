@@ -25,6 +25,7 @@ const Signup = () => {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
