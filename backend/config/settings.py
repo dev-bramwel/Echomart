@@ -48,7 +48,6 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS =[
-    'http://localhost:3000',  # Create React App
     'http://localhost:5173',  # Vite frontend
 ]
 
