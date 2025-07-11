@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { userRegister } from "../../../api";
 
 //styles
@@ -22,6 +23,8 @@ const Signup = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +61,9 @@ const Signup = () => {
       setSuccess("User registered successfully!");
       setError("");
       console.log("User is registered: ", response.data);
+
+      //redirect to login
+      navigate("/login");
     } catch (error) {
       let errorMessage = "Registration failed. Try again.";
 
