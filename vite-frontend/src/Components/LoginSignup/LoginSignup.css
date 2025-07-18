@@ -22,11 +22,15 @@
   margin-bottom: 28px;
 }
 .header img {
-  width: 290px;
-  height: 230px;
+  width: 320px;
+  margin: 0 auto 16px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 8px;
   margin-bottom: 1px;
 }
 .header h1 {
+  margin: 0;
   color: var(--orange);
   font-size: 2rem;
   margin: 8px 0 0;
@@ -35,21 +39,25 @@
 .header p {
   color: var(--black);
   font-size: 1rem;
+  max-width: 350px;
   margin: 0 0 8px 0;
 }
 
 .inputs {
-  width: 100%;
+  margin-left: -68px;
+  width: 180%;
+  padding: 7px 12px;
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 .input {
   display: flex;
+  width: 100%;
   align-items: center;
   background: #f7f7f7;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 6px 20px;
   border: 1px solid #eee;
 }
 .input img {
@@ -101,6 +109,32 @@
 }
 .text a:hover {
   text-decoration: underline;
+}
+
+.ending {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--black);
+  font-size: 0.9rem;
+}
+.ending p{
+  margin: 0;
+  font-weight: 600;
+  max-width: 400px;
+}
+.ending a {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 600;
+}
+.end p {
+  margin: 0;
+  font-weight: 600;
+  font-family: brush script mt;
+  margin-top: 24px;
+  text-align: center;
+  color: var(--black);
+  font-size: 1.9rem;
 }
 
 @media (max-width: 500px) {
