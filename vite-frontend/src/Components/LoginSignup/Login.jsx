@@ -55,7 +55,7 @@ const Login = () => {
       window.dispatchEvent(new Event("authChanged"));
       navigate("/");
     } catch (error) {
-      let errorMessage = "Registration failed. Try again.";
+      let errorMessage = "Email or Password failed. Try again.";
 
       const data = error?.response?.data;
       if (data && typeof data === "object") {
@@ -131,7 +131,10 @@ const Login = () => {
 
       <div className="text">
         <p>
-          Don't have an Account?<a href="/signup">Signup</a>
+          Don't have an Account? <a href="/signup">Signup</a>
+        </p>
+        <p>
+          <a href="/password-recovery">Forgot Password?</a>
         </p>
       </div>
     </div>

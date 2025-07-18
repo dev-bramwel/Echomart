@@ -1,0 +1,29 @@
+import React from 'react'
+import "./LoginSignup.css";
+import echomart_logo from "../Assets/Echomart_logo3.png";
+
+const Passcode = () => {
+  return (
+    <div className='container'>
+      <div className="header">
+        <img src={echomart_logo} alt="" />
+        <h1>Enter Security Code</h1>
+      </div>
+      <div className="formbox">
+        <p>Enter the security code sent to your Email Address.</p>
+        <div className="input">
+          <input type="text" placeholder="Security Code" />
+        </div>
+        <div className="button">
+          <button>Verify Code</button>
+        </div>
+        <div className="ending">
+            <p>Go Back to Login</p>
+            <a href="/Login">Login</a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Passcode
