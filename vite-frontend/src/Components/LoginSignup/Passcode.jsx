@@ -18,8 +18,8 @@ const Passcode = () => {
           <button>Verify Code</button>
         </div>
         <div className="ending">
-            <p>Go Back to Login</p>
-            <a href="/Login">Login</a>
+            <p>Return to Login</p>
+            <a href="/Login">LOGIN</a>
         </div>
       </div>
     </div>
