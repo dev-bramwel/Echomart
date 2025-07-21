@@ -176,6 +176,9 @@ const Signup = () => {
           Do you have an Account?<a href="/login">Login</a>
         </p>
       </div>
+      <div className="end">
+        <p>&copy; 2025 Echomart</p>
+      </div>
     </div>
   );
 };

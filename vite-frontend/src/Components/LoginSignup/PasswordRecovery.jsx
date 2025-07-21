@@ -8,7 +8,7 @@ const PasswordRecovery = () => {
       <div className="header">
         <img src={echomart_logo} alt="" />
         <h1>Password Recovery</h1>
-        <p>Request to reset Password below. A security code will be sent to your Email Address.</p>
+        <p>Request to reset Password below. A Security Code will be sent to your Email Address.</p>
       </div>
       <div className="input">
         <input type="email" placeholder="Email Address" />
@@ -20,7 +20,7 @@ const PasswordRecovery = () => {
         <p>Need any Help. Contact Customer support or visit the help centre</p>
       </div>
       <div className="end">
-        <p>Echomart</p>
+        <p>&copy; 2025 Echomart</p>
       </div>
     </div>
   );
