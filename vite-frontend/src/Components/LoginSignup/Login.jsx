@@ -137,6 +137,9 @@ const Login = () => {
           <a href="/password-recovery">Forgot Password?</a>
         </p>
       </div>
+      <div className="end">
+        <p>&copy; 2025 Echomart</p>
+      </div>
     </div>
   );
 };

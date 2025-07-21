@@ -10,7 +10,7 @@ const Passcode = () => {
         <h1>Enter Security Code</h1>
       </div>
       <div className="formbox">
-        <p>Enter the security code sent to your Email Address.</p>
+        <p>Enter the Security Code sent to your Email Address.</p>
         <div className="input">
           <input type="text" placeholder="Security Code" />
         </div>
@@ -21,6 +21,9 @@ const Passcode = () => {
             <p>Return to Login</p>
             <a href="/Login">LOGIN</a>
         </div>
+              <div className="end">
+        <p>&copy; 2025 Echomart</p>
+      </div>
       </div>
     </div>
   )
