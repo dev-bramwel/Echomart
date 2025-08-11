@@ -1,8 +1,7 @@
-import axios from "axios"
-import Cookies from "js-cookie"; 
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const API = axios.create({baseURL: "http://127.0.0.1:8000/"})
-
+const API = axios.create({ baseURL: "http://127.0.0.1:8000/" });
 
 // Attach token from cookies
 API.interceptors.request.use((req) => {
@@ -15,15 +14,15 @@ API.interceptors.request.use((req) => {
 
 //Register
 export const userRegister = (formData) => {
-    return API.post("/api/accounts/register/", formData)
-}
+  return API.post("/api/accounts/register/", formData);
+};
 
 //Login
 export const userLogin = (formData) => {
-    return API.post("api/accounts/login/", formData)
-}
+  return API.post("api/accounts/login/", formData);
+};
 
 //Logout
 export const logout = () => {
-    return API.post("/api/accounts/logout/")
-}
+  return API.post("/api/accounts/logout/");
+};
