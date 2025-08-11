@@ -55,7 +55,7 @@ const Login = () => {
       window.dispatchEvent(new Event("authChanged"));
       navigate("/");
     } catch (error) {
-      let errorMessage = "Registration failed. Try again.";
+      let errorMessage = "Email or Password failed. Try again.";
 
       const data = error?.response?.data;
       if (data && typeof data === "object") {
@@ -138,6 +138,9 @@ const Login = () => {
         <p>
           Don't have an Account?<a href="/signup">Signup</a>
         </p>
+      </div>
+      <div className="end">
+        <p>&copy; 2025 Echomart</p>
       </div>
     </div>
   );
