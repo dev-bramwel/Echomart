@@ -37,7 +37,7 @@ const Login = () => {
         return;
       }
 
-      response = await userLogin(formData)
+      response = await userLogin(formData);
       setSuccess("You have logged in succesfully!");
 
       // Store user token in cookies (valid for 1 day)
@@ -100,7 +100,6 @@ const Login = () => {
         </div>
       )}
 
-
       <form onSubmit={handleSubmit}>
         <div className="inputs">
           <div className="input">
@@ -128,6 +127,12 @@ const Login = () => {
           <button>Login</button>
         </div>
       </form>
+
+      <div className="text">
+        <p>
+          <a href="/change-password">Forgot password</a>
+        </p>
+      </div>
 
       <div className="text">
         <p>
