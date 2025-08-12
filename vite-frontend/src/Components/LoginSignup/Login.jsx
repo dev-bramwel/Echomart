@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { userLogin } from "../../../api";
 import Cookies from "js-cookie";
 
@@ -136,7 +136,7 @@ const Login = () => {
 
       <div className="text">
         <p>
-          Don't have an Account?<a href="/signup">Signup</a>
+          Don't have an Account?<Link to="/signup">Signup</Link>
         </p>
       </div>
       <div className="end">
