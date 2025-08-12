@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { userRegister } from "../../../api";
 
 //styles
@@ -24,7 +24,6 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,7 +172,7 @@ const Signup = () => {
 
       <div className="text">
         <p>
-          Do you have an Account?<a href="/login">Login</a>
+          Do you have an Account?<Link to="/login">Login</Link>
         </p>
       </div>
       <div className="end">
