@@ -84,48 +84,45 @@ class UserLoginSerializer(serializers.Serializer):
         return attrs
 
 
-# Serializer for updating user profile (e.g., from frontend)
-class UserProfileUpdateSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(read_only=True)
-    phone_number = serializers.CharField(source="user.phone_number")
+class UserProfileSerializer(serializers.ModelSerializer):
+    # User model fields
+    username = serializers.CharField(source="user.username", required=False, allow_blank=True)
+    full_name = serializers.CharField(source="user.full_name", read_only=True)
+    phone_number = serializers.CharField(source="user.phone_number", required=False)
+
     class Meta:
         model = UserProfile
-        fields = ['phone_number', 'full_name', 'bio', 'avatar', 'address', 'city', 'country', 'postal_code']
-    username = serializers.CharField(required=False, allow_blank=True)
-    
-    def get_full_name(self, obj):
-        return obj.full_name
-
-
-    class Meta:
-        model = CustomUser
-        fields = ['username', 'full_name', 'phone_number', 'date_of_birth']
+        fields = [
+            'username',
+            'full_name',
+            'phone_number',
+            'bio',
+            'avatar',
+            'address',
+            'city',
+            'country',
+            'postal_code'
+        ]
 
     def validate_username(self, value):
         if value == '':
-            return None  # treat blank as null
-
-        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.id).first()
+            return None
+        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.user.id).first()
         if user:
             raise serializers.ValidationError("This username is already taken.")
         return value
 
-# Serializer for updating CustomUser fields
-class CustomUserUpdateSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=False, allow_blank=True)
+    def update(self, instance, validated_data):
+        # Extract nested user data
+        user_data = validated_data.pop('user', {})
 
-    class Meta:
-        model = CustomUser
-        fields = ['username', 'full_name', 'phone_number', 'date_of_birth']
+        # Update user fields
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+        instance.user.save()
 
-    def validate_username(self, value):
-        if value == '':
-            return None  # treat blank as null
-
-        user = CustomUser.objects.filter(username=value).exclude(id=self.instance.id).first()
-        if user:
-            raise serializers.ValidationError("This username is already taken.")
-        return value
+        # Update profile fields
+        return super().update(instance, validated_data)
 
 
 # Serializer for changing password

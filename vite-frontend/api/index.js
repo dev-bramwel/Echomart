@@ -26,3 +26,13 @@ export const userLogin = (formData) => {
 export const logout = () => {
   return API.post("/api/accounts/logout/");
 };
+
+//profile view
+export const profile = () => {
+  return API.get("/api/accounts/profile/");
+};
+
+//profile update
+export const profileUpdate = (formData) => {
+  return API.patch("/api/accounts/profile/", formData);
+};
