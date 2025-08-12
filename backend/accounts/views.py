@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from .models import CustomUser, UserProfile
 from .serializers import (
     UserSerializer, UserRegistrationSerializer, UserLoginSerializer,
-    UserProfileUpdateSerializer, ChangePasswordSerializer
+    UserProfileSerializer, ChangePasswordSerializer
 )
 
 # ✅ User Registration View (no username, no confirm password)
@@ -64,25 +64,13 @@ def logout_view(request):
 
 # ✅ Get/Update current user basic info
 class UserProfileView(generics.RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
-
-
-# ✅ Update UserProfile only (address, avatar, bio, etc.)
-class UserProfileUpdateView(generics.UpdateAPIView):
-    serializer_class = UserProfileUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_object(self):
-        return self.request.user.profile
-
-    def get_object(self):
+        # Ensure the user has a profile
         profile, _ = UserProfile.objects.get_or_create(user=self.request.user)
         return profile
-    
 
 # ✅ Password change (old/new/confirm handled)
 @api_view(['POST'])
