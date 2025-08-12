@@ -130,7 +130,7 @@ const Login = () => {
 
       <div className="text">
         <p>
-          <Link to="/change-password">Forgot password</Link>
+          <Link to="/PasswordRecovery">Forgot password</Link>
         </p>
       </div>
 
