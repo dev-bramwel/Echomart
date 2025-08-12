@@ -15,7 +15,7 @@ const App = () => {
         <Route path="/" element={<Categorybar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/password-recovery" element={<PasswordRecovery />} />
+        <Route path="/PasswordRecovery" element={<PasswordRecovery />} />
         <Route path="/passcode" element={<Passcode />} />
       </Routes>
     </Router>
