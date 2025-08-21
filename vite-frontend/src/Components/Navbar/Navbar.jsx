@@ -68,11 +68,11 @@ const Navbar = () => {
       {/* Navigation Links */}
       <div className="nav-links">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/">Shop</a></li>
-          <li><a href="/">About Us</a></li>
-          <li><a href="/">Contact Us</a></li>
-          <li><a href="/">All Products</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/shop">Shop</Link></li>
+          <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/contact">Contact Us</Link></li>
+          <li><Link to="/products">All Products</Link></li>
         </ul>
       </div>
 
@@ -109,10 +109,6 @@ const Navbar = () => {
 
             <Link to="/account" onClick={() => setShowProfileDropdown(false)}>
               <div className="dropdown-item">My Account</div>
-            </Link>
-
-            <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
-              <div className="dropdown-item">Profile</div>
             </Link>
             
             <div className="dropdown-item" onClick={handleDropdownLogout}>
