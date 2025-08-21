@@ -61,7 +61,7 @@ const Navbar = () => {
     <div className="navbar-container">
       {/* Logo */}
       <div className="logo">
-        <img src={Echomart_logo} alt="" />
+        <img src={Echomart_logo} alt="Echomart Logo" />
         <h1>Echomart</h1>
       </div>
 
@@ -93,8 +93,8 @@ const Navbar = () => {
       <div className="profile-dropdown-container" ref={dropdownRef}>
         <div className="profile-btn" onClick={handleProfileClick}>
           <img
-            src="https://via.placeholder.com/30" // replace with actual profile image
-            alt=""
+            src="https://via.placeholder.com/30"
+            alt="Profile"
             className="profile-image"
           />
           <span className="profile-name">Profile</span>
@@ -110,7 +110,11 @@ const Navbar = () => {
             <Link to="/account" onClick={() => setShowProfileDropdown(false)}>
               <div className="dropdown-item">My Account</div>
             </Link>
-            
+
+            <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
+              <div className="dropdown-item">Profile</div>
+            </Link>
+
             <div className="dropdown-item" onClick={handleDropdownLogout}>
               Logout
             </div>
