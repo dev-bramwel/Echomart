@@ -61,18 +61,18 @@ const Navbar = () => {
     <div className="navbar-container">
       {/* Logo */}
       <div className="logo">
-        <img src={Echomart_logo} alt="" />
+        <img src={Echomart_logo} alt="Echomart Logo" />
         <h1>Echomart</h1>
       </div>
 
       {/* Navigation Links */}
       <div className="nav-links">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/">Shop</a></li>
-          <li><a href="/">About Us</a></li>
-          <li><a href="/">Contact Us</a></li>
-          <li><a href="/">All Products</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/shop">Shop</Link></li>
+          <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/contact">Contact Us</Link></li>
+          <li><Link to="/products">All Products</Link></li>
         </ul>
       </div>
 
@@ -93,8 +93,8 @@ const Navbar = () => {
       <div className="profile-dropdown-container" ref={dropdownRef}>
         <div className="profile-btn" onClick={handleProfileClick}>
           <img
-            src="https://via.placeholder.com/30" // replace with actual profile image
-            alt=""
+            src="https://via.placeholder.com/30"
+            alt="Profile"
             className="profile-image"
           />
           <span className="profile-name">Profile</span>
@@ -114,7 +114,7 @@ const Navbar = () => {
             <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
               <div className="dropdown-item">Profile</div>
             </Link>
-            
+
             <div className="dropdown-item" onClick={handleDropdownLogout}>
               Logout
             </div>
