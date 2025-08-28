@@ -78,7 +78,7 @@ SIMPLE_JWT = {
 
 # API Documentation
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'EchoMart API',
+    'TITLE': 'Echomart API',
     'DESCRIPTION': 'A comprehensive e-commerce API',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,

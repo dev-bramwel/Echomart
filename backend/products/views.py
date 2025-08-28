@@ -1,18 +1,20 @@
-from rest_framework import generics, filters, permissions, status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import generics, filters, permissions, status, viewsets
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q
+from django.db.models import Q, Avg, Count
 from .models import Category, Product, ProductReview, Wishlist
 from .serializers import (
     CategorySerializer, ProductListSerializer, ProductDetailSerializer,
     ProductCreateUpdateSerializer, ProductReviewSerializer, ProductReviewCreateSerializer,
     WishlistSerializer
 )
+from .filters import ProductFilter
 
 class CategoryListAPIView(generics.ListAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.AllowAny]
+    lookup_field = 'slug'
     
     def get_queryset(self):
         return Category.objects.filter(is_active=True, parent=None)
