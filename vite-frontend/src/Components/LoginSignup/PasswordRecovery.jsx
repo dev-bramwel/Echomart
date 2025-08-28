@@ -1,4 +1,5 @@
 import react from "react";
+import { Link } from "react-router-dom";
 import "./LoginSignup.css";
 import echomart_logo from "../Assets/Echomart_logo3.png";
 
@@ -14,7 +15,7 @@ const PasswordRecovery = () => {
         <input type="email" placeholder="Email Address" />
       </div>
       <div className="button">
-        <button><a href="/Passcode">Request Security Code</a></button>
+        <button><Link to="/Passcode">Request Security Code</Link></button>
       </div>
       <div className="ending">
         <p>Need any Help. Contact Customer support or visit the help centre</p>

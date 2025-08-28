@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import "./LoginSignup.css";
 import echomart_logo from "../Assets/Echomart_logo3.png";
 
@@ -17,10 +18,10 @@ const Passcode = () => {
         <div className="button">
           <button>Verify Code</button>
         </div>
-        <div className="ending">
-            <p>Return to Login</p>
-            <a href="/Login">LOGIN</a>
-        </div>
+    <div className="ending">
+      <p>Return to Login</p>
+      <Link to="/Login">LOGIN</Link>
+    </div>
               <div className="end">
         <p>&copy; 2025 Echomart</p>
       </div>
