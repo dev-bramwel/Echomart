@@ -81,7 +81,7 @@ echomart/
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/echomart.git
+   [git clone https://github.com/dev-bramwel/Echomart.git
    cd echomart
    ```
 
