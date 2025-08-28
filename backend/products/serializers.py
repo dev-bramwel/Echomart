@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductImage, ProductVariant, ProductReview, Wishlist
+from .models import Category, Product, ProductImage, ProductVariant, ProductReview, Wishlist, Vendor
 from django.db.models import Avg
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -39,7 +39,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     )
     vendor = serializers.StringRelatedField(read_only=True)
     vendor_id = serializers.PrimaryKeyRelatedField(
-        queryset=vendor.objects.all(), source='vendor', write_only=True
+        queryset=Vendor.objects.all(), source='vendor', write_only=True
     )
     images = ProductImageSerializer(many=True, read_only=True)
     variants = ProductVariantSerializer(many=True, read_only=True)
@@ -51,11 +51,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'name', 'slug', 'description', 'short_description', 'price',
-            'sku', 'quantity', 'category',
+            'sku', 'stock_quantity', 'category',
             'category_id', 'vendor', 'vendor_id', 'status', 'featured', 'is_digital',
-            'weight', 'length', 'width', 'height', 'seo_title', 'seo_description',
+            'weight', 'seo_title', 'seo_description',
             'images', 'variants', 'reviews', 'average_rating', 'review_count',
-            'created_at', 'updated_at', 'in_stock', 'is_on_sale', 'discount_percentage'
+            'created_at', 'updated_at', 'in_stock', 'is_on_sale', 'discounted_price'
         ]
         read_only_fields = ['slug', 'created_at', 'updated_at']
     
