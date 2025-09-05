@@ -8,18 +8,30 @@ import PasswordRecovery from "./Components/LoginSignup/PasswordRecovery.jsx";
 import Passcode from "./Components/LoginSignup/Passcode.jsx";
 import Account from "./Components/LoginSignup/Account.jsx";
 
+import Home from "./Components/Pages/Home/Home.jsx";
+import Recommendations from "./Components/Pages/Home/Recommendations.jsx";
+
 const App = () => {
   return (
     <Router>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Categorybar />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/PasswordRecovery" element={<PasswordRecovery />} />
-        <Route path="/passcode" element={<Passcode />} />
-        <Route path="/account" element={<Account />} />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Categorybar />
+                <Home />
+                <Recommendations />
+              </>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/PasswordRecovery" element={<PasswordRecovery />} />
+          <Route path="/passcode" element={<Passcode />} />
+          <Route path="/account" element={<Account />} />
+        </Routes>
     </Router>
   );
 };

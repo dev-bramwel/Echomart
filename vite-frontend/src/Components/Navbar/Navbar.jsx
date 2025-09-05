@@ -72,7 +72,6 @@ const Navbar = () => {
           <li><Link to="/shop">Shop</Link></li>
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
-          <li><Link to="/products">All Products</Link></li>
         </ul>
       </div>
 
@@ -94,7 +93,7 @@ const Navbar = () => {
         <div className="profile-btn" onClick={handleProfileClick}>
           <img
             src="https://via.placeholder.com/30"
-            alt="Profile"
+            alt=""
             className="profile-image"
           />
           <span className="profile-name">Profile</span>

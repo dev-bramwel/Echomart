@@ -1,0 +1,72 @@
+.recommendations {
+  padding: 20px;
+  background: #e8e7e7;
+  margin: 20px 0;
+}
+
+.recommendations h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(167px, 1fr));
+  gap: 29px;
+}
+
+.recommend-card {
+  text-align: center;
+  padding: 10px 7px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.recommend-card:hover {
+  box-shadow: 0 14px 18px rgba(0,0,0,0.1);
+}
+
+.recommend-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+}
+
+.recommend-card .name {
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.recommend-card .price {
+  font-size: 15px;
+  color: red;
+  font-weight: bold;
+}
+
+.recommend-card .rating {
+  font-size: 13px;
+  color: #666;
+}
+
+.show-more {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.show-more button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.show-more button:hover {
+  background: #d6d6d6;
+}
+.show-more button:active {
+  background: #f9a007;
+}
