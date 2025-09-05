@@ -69,8 +69,13 @@
   font-weight: 600;
   transition: background 0.2s;
 }
+
 .search button:hover {
   background: #004a9a;
+}
+
+.search button:active{
+  background: #78b7f3;
 }
 
 .cart {
@@ -146,6 +151,10 @@
   min-width: 160px;
   z-index: 1000;
   padding: 8px 0;
+}
+.profile-btn:active{
+  background: #78b7f3;
+  border-radius: 10px;
 }
 
 .dropdown-item {
