@@ -83,7 +83,7 @@ lint-backend:
 	$(COMPOSE) run --rm backend ruff check .
 
 lint-frontend:
-	$(COMPOSE) run --rm frontend npm run lint
+	$(COMPOSE) run --rm frontend-lint
 
 format: format-backend format-frontend
 
@@ -91,7 +91,7 @@ format-backend:
 	$(COMPOSE) run --rm backend black .
 
 format-frontend:
-	$(COMPOSE) run --rm frontend npm run lint -- --fix
+	$(COMPOSE) run --rm frontend-lint npm run lint -- --fix
 
 format-check: format-check-backend format-check-frontend
 
@@ -100,7 +100,7 @@ format-check-backend:
 	$(COMPOSE) run --rm backend ruff check .
 
 format-check-frontend:
-	$(COMPOSE) run --rm frontend npm run lint
+	$(COMPOSE) run --rm frontend-lint
 
 frontend-build:
 	$(COMPOSE) build frontend

@@ -7,7 +7,9 @@ import Echomart_logo from "../Assets/Echomart_logo.png";
 import shopping_cart from "../Assets/shopping_cart.png";
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!Cookies.get("token"),
+  );
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -34,6 +36,7 @@ const Navbar = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -68,10 +71,18 @@ const Navbar = () => {
       {/* Navigation Links */}
       <div className="nav-links">
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/shop">Shop</Link></li>
-          <li><Link to="/about">About Us</Link></li>
-          <li><Link to="/contact">Contact Us</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/shop">Shop</Link>
+          </li>
+          <li>
+            <Link to="/about">About Us</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
+          </li>
         </ul>
       </div>
 
@@ -102,21 +113,31 @@ const Navbar = () => {
 
         {showProfileDropdown && (
           <div className="profile-dropdown">
-            <Link to="/login" onClick={() => setShowProfileDropdown(false)}>
-              <div className="dropdown-item">Login</div>
-            </Link>
+            {!isAuthenticated ? (
+              <Link to="/login" onClick={() => setShowProfileDropdown(false)}>
+                <div className="dropdown-item">Login</div>
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/account"
+                  onClick={() => setShowProfileDropdown(false)}
+                >
+                  <div className="dropdown-item">My Account</div>
+                </Link>
 
-            <Link to="/account" onClick={() => setShowProfileDropdown(false)}>
-              <div className="dropdown-item">My Account</div>
-            </Link>
+                <Link
+                  to="/profile"
+                  onClick={() => setShowProfileDropdown(false)}
+                >
+                  <div className="dropdown-item">Profile</div>
+                </Link>
 
-            <Link to="/profile" onClick={() => setShowProfileDropdown(false)}>
-              <div className="dropdown-item">Profile</div>
-            </Link>
-
-            <div className="dropdown-item" onClick={handleDropdownLogout}>
-              Logout
-            </div>
+                <div className="dropdown-item" onClick={handleDropdownLogout}>
+                  Logout
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>

@@ -15,9 +15,7 @@ class VendorAPITest(APITestCase):
 
         # Use JWT token
         refresh = RefreshToken.for_user(self.user)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Bearer {refresh.access_token!s}"
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token!s}")
 
         self.vendor = Vendor.objects.create(
             user=self.user,

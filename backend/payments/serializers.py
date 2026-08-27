@@ -92,11 +92,11 @@ class CreateRefundSerializer(serializers.ModelSerializer):
 
     def validate_payment_id(self, value):
         try:
-           if not Payment.objects.filter(
-            id=value, order__user=self.context["request"].user, status="completed"
+            if not Payment.objects.filter(
+                id=value, order__user=self.context["request"].user, status="completed"
             ).exists():
-            raise serializers.ValidationError("Completed payment not found.")
-            return value
+                raise serializers.ValidationError("Completed payment not found.")
+                return value
         except Payment.DoesNotExist:
             raise serializers.ValidationError("Payment not found or not completed")
 

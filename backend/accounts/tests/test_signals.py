@@ -22,8 +22,8 @@ class UserSignalTest(TestCase):
     def test_profile_saved_on_user_update(self):
         """Ensure profile is still intact and updated when user is updated."""
         if hasattr(self.user.profile, "updated_at"):
-            _ =self.user.profile.updated_at
-    
+            _ = self.user.profile.updated_at
+
         self.user.full_name = "Updated Name"
         self.user.save()
         profile = UserProfile.objects.get(user=self.user)
