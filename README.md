@@ -2,6 +2,8 @@
 
 Echomart is a simplified e-commerce platform built with Django and React. It is designed to demonstrate clean backend/frontend separation, dynamic product management, user accounts, and real-time payment integration via M-PESA or Flutterwave.
 
+For the shared setup, development workflow, daily log template, contribution guide, and troubleshooting notes, see the [development documentation](docs/README.md).
+
 ---
 
 ## 📁 Project Structure

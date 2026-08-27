@@ -1,0 +1,64 @@
+services:
+  db:
+    image: echomart-db:latest
+    build:
+      context: .
+      dockerfile: deployments/database.Dockerfile
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-echomart}
+      POSTGRES_USER: ${POSTGRES_USER:-echomart}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env or the shell}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    image: echomart-backend:latest
+    build:
+      context: .
+      dockerfile: deployments/backend.Dockerfile
+    environment:
+      DEBUG: ${DEBUG:-False}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env or the shell}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      DB_ENGINE: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-echomart}
+      POSTGRES_USER: ${POSTGRES_USER:-echomart}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env or the shell}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - static_data:/app/backend/staticfiles
+      - media_data:/app/backend/media
+    command: >-
+      sh -c "python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+  frontend:
+    image: echomart-frontend:latest
+    build:
+      context: .
+      dockerfile: deployments/frontend.Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/}
+    depends_on:
+      - backend
+    ports:
+      - "5173:8080"
+
+volumes:
+  postgres_data:
+  static_data:
+  media_data:

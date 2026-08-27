@@ -2,15 +2,15 @@
 import "./Categorybar.css";
 
 // images
-import electronics from "../assets/Electronics.png";
-import clothes from "../assets/clothes.png";
-import groceries from "../assets/groceries.png";
-import bags from "../assets/bags.png";
-import jewelry from "../assets/jewelry.png";
-import phones from "../assets/phones.png";
-import cutlery from "../assets/cutlery.png";
-import art from "../assets/art.png";
-import furniture from "../assets/furniture.png";
+import electronics from "../Assets/Electronics.png";
+import clothes from "../Assets/Clothes.png";
+import groceries from "../Assets/Groceries.png";
+import bags from "../Assets/Bags.png";
+import jewelry from "../Assets/jewelry.png";
+import phones from "../Assets/Phones.png";
+import cutlery from "../Assets/Cutlery.png";
+import art from "../Assets/Art.png";
+import furniture from "../Assets/furniture.png";
 
 const Categorybar = () => {
   return (

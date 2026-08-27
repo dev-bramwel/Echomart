@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { logout } from "../../../api";
 import "./Navbar.css";
-import Echomart_logo from "../assets/Echomart_logo.png";
-import shopping_cart from "../assets/shopping_cart.png";
+import Echomart_logo from "../Assets/Echomart_logo.png";
+import shopping_cart from "../Assets/shopping_cart.png";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("token"));
