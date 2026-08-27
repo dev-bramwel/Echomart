@@ -9,8 +9,10 @@ help:
 	@echo "Echomart development shortcuts:"
 	@echo "  make build          Build all Docker images"
 	@echo "  make up             Build and start the stack"
+	@echo "  make start          Start existing stopped containers"
 	@echo "  make rebuild        Snapshot images, rebuild, and restart"
 	@echo "  make rollback       Restore images from the last rebuild snapshot"
+	@echo "  make stop           Stop containers without removing them"
 	@echo "  make down           Stop and remove containers"
 	@echo "  make logs           Follow service logs"
 	@echo "  make migrate        Apply Django migrations"
@@ -31,9 +33,10 @@ build:
 	$(COMPOSE) build
 
 up:
-	$(COMPOSE) up -d --build
+	$(COMPOSE) up -d --build --force-recreate
 
-start: up
+start:
+	$(COMPOSE) start
 
 rebuild: snapshot
 	$(COMPOSE) build --no-cache
@@ -50,7 +53,8 @@ rollback:
 down:
 	$(COMPOSE) down --remove-orphans
 
-stop: down
+stop:
+	$(COMPOSE) stop
 
 restart:
 	$(COMPOSE) restart

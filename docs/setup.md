@@ -38,6 +38,8 @@ The backend applies migrations and collects static files when it starts. The Pos
 ```bash
 make help           # List available shortcuts
 make logs           # Follow all service logs
+make start          # Start existing stopped containers
+make stop           # Stop containers without removing them
 make restart        # Restart containers without rebuilding
 make migrate        # Apply pending migrations
 make makemigrations # Create migrations after model changes
@@ -47,6 +49,8 @@ make lint           # Run frontend ESLint
 make down           # Stop and remove containers
 make clean          # Stop containers and remove volumes
 ```
+
+Use `make up` when starting the project for the first time or after changing a Dockerfile. Use `make start` and `make stop` for day-to-day container control after the stack has already been created. `make down` removes the containers but preserves named volumes.
 
 Use `make clean` only when deleting local database and uploaded-media state is intentional.
 
