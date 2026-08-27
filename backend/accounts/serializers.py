@@ -4,13 +4,6 @@ from rest_framework import serializers
 from .models import CustomUser, UserProfile
 
 
-# Serializer for displaying and updating user profile data
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ["bio", "avatar", "address", "city", "country", "postal_code"]
-
-
 # Main serializer for outputting full user info
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(read_only=True)
