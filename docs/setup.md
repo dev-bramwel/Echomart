@@ -10,7 +10,10 @@ On Windows, Git Bash, WSL, or another environment that provides GNU Make can be 
 
 ## First-time setup
 
-1. Copy `.env.example` to `.env`.
+1. Copy `.env.example` to `.env` and generate django secret key using:
+```bash
+python -c 'import secrets; print(secrets.token_urlsafe(50))'
+```
 2. Replace `SECRET_KEY` and `POSTGRES_PASSWORD` with local values.
 3. Start the services:
 

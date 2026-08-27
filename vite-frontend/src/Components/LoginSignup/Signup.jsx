@@ -6,11 +6,11 @@ import { userRegister } from "../../../api";
 import "./LoginSignup.css";
 
 //icons
-import echomart_logo from "../assets/echomart_logo3.png";
-import user_icon from "../assets/user.png";
-import phone_icon from "../assets/phone.png";
-import email_icon from "../assets/email.png";
-import password_icon from "../assets/password.png";
+import echomart_logo from "../Assets/Echomart_logo3.png";
+import user_icon from "../Assets/user.png";
+import phone_icon from "../Assets/phone.png";
+import email_icon from "../Assets/email.png";
+import password_icon from "../Assets/password.png";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
