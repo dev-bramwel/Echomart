@@ -32,11 +32,14 @@ Use `fix/`, `docs/`, or `chore/` when those prefixes describe the work better th
 make migrate
 make test
 make lint
+make format-check
 git diff --check
 git status
 ```
 
 For integration-sensitive changes, also run `make rebuild`, inspect `make logs`, and verify the affected user flow at `http://localhost:5173`.
+
+Pull requests targeting `main` or `develop` automatically run the checks described in the [CI checks guide](ci-checks.md). Run the same local checks before pushing so formatting, lint, tests, frontend builds, Compose configuration, and Docker image builds are caught early.
 
 ## 5. Commit and review
 

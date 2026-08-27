@@ -1,4 +1,4 @@
-.PHONY: help build snapshot up start rebuild down stop restart logs migrate makemigrations shell test test-backend lint frontend-build clean rollback
+.PHONY: help build snapshot up start rebuild down stop restart logs migrate makemigrations shell test test-backend lint lint-backend lint-frontend format format-backend format-frontend format-check format-check-backend format-check-frontend frontend-build clean rollback
 
 COMPOSE := docker compose
 BACKEND_IMAGE := echomart-backend:latest
@@ -17,7 +17,9 @@ help:
 	@echo "  make makemigrations Create Django migrations"
 	@echo "  make shell          Open a Django shell"
 	@echo "  make test           Run backend tests"
-	@echo "  make lint           Run frontend linting"
+	@echo "  make lint           Run backend and frontend linting"
+	@echo "  make format         Format backend and frontend code"
+	@echo "  make format-check   Check backend formatting and frontend lint rules"
 	@echo "  make clean          Remove containers and volumes"
 
 snapshot:
@@ -70,7 +72,30 @@ test: test-backend
 test-backend:
 	$(COMPOSE) exec backend python manage.py test
 
-lint:
+lint: lint-backend lint-frontend
+
+lint-backend:
+	$(COMPOSE) run --rm backend python manage.py check
+	$(COMPOSE) run --rm backend ruff check .
+
+lint-frontend:
+	$(COMPOSE) run --rm frontend npm run lint
+
+format: format-backend format-frontend
+
+format-backend:
+	$(COMPOSE) run --rm backend black .
+
+format-frontend:
+	$(COMPOSE) run --rm frontend npm run lint -- --fix
+
+format-check: format-check-backend format-check-frontend
+
+format-check-backend:
+	$(COMPOSE) run --rm backend black --check .
+	$(COMPOSE) run --rm backend ruff check .
+
+format-check-frontend:
 	$(COMPOSE) run --rm frontend npm run lint
 
 frontend-build:

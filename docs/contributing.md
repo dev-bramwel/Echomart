@@ -39,6 +39,7 @@ Use `.env.example` as the list of supported local variables. Keep real values in
 
 - [ ] Branch is based on current `main`.
 - [ ] Tests and linting pass, or failures are explained.
+- [ ] `make format-check` passes.
 - [ ] Migrations are included and reviewed when models changed.
 - [ ] Documentation and `.env.example` are updated when setup changes.
 - [ ] UI changes include screenshots or a recording.
