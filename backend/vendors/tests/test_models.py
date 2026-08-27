@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from django.test import TestCase
 
 from vendors.models import Vendor, VendorBankDetails
@@ -47,7 +48,7 @@ class VendorModelTest(TestCase):
             account_name="Test Name",
             account_number="9999999999",
         )
-        with self.assertRaises(Exception):  # Could be IntegrityError or ValidationError
+        with self.assertRaises(IntegrityError):  # Could be IntegrityError or ValidationError
             VendorBankDetails.objects.create(
                 vendor=self.vendor,
                 bank_name="Equity 2",
@@ -82,7 +83,7 @@ class VendorBankDetailsModelTest(TestCase):
         self.assertEqual(str(self.bank_details), expected_str)
 
     def test_unique_together_constraint(self):
-        with self.assertRaises(Exception):  # Expecting IntegrityError or DatabaseError
+        with self.assertRaises(IntegrityError):  # Expecting IntegrityError or DatabaseError
             VendorBankDetails.objects.create(
                 vendor=self.vendor,
                 bank_name="Another Bank",
