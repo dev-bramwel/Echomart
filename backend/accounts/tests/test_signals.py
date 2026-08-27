@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from accounts.models import CustomUser, UserProfile
 
 
@@ -9,7 +10,7 @@ class UserSignalTest(TestCase):
             email="signaltest@example.com",
             full_name="Signal Tester",
             phone_number="0712345678",
-            password="testpass"
+            password="testpass",
         )
 
     def test_profile_created_on_user_creation(self):
@@ -20,11 +21,15 @@ class UserSignalTest(TestCase):
 
     def test_profile_saved_on_user_update(self):
         """Ensure profile is still intact and updated when user is updated."""
-        old_updated_at = self.user.profile.updated_at if hasattr(self.user.profile, "updated_at") else None
+        if hasattr(self.user.profile, "updated_at"):
+            _ =self.user.profile.updated_at
+    
         self.user.full_name = "Updated Name"
         self.user.save()
         profile = UserProfile.objects.get(user=self.user)
-        self.assertEqual(profile.user.full_name, "Updated Name")  # Ensure profile still linked correctly
+        self.assertEqual(
+            profile.user.full_name, "Updated Name"
+        )  # Ensure profile still linked correctly
 
     def test_signal_does_not_duplicate_profiles(self):
         """Ensure that updating a user does not create a duplicate profile."""

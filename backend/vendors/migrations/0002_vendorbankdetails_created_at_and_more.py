@@ -8,37 +8,41 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0001_initial'),
+        ("vendors", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vendorbankdetails',
-            name='created_at',
+            model_name="vendorbankdetails",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='vendorbankdetails',
-            name='is_default',
+            model_name="vendorbankdetails",
+            name="is_default",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='vendorbankdetails',
-            name='updated_at',
+            model_name="vendorbankdetails",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='created_at',
+            model_name="vendor",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='vendorbankdetails',
-            name='vendor',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bank_details', to='vendors.vendor'),
+            model_name="vendorbankdetails",
+            name="vendor",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="bank_details",
+                to="vendors.vendor",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='vendorbankdetails',
-            unique_together={('vendor', 'account_number')},
+            name="vendorbankdetails",
+            unique_together={("vendor", "account_number")},
         ),
     ]

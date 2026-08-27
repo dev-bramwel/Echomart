@@ -1,12 +1,12 @@
-from django.test import TestCase, RequestFactory
-from rest_framework.exceptions import ValidationError
-from accounts.models import CustomUser, UserProfile
+from django.test import RequestFactory, TestCase
+
+from accounts.models import CustomUser
 from accounts.serializers import (
-    UserRegistrationSerializer,
-    UserLoginSerializer,
-    UserSerializer,
+    ChangePasswordSerializer,
     CustomUserUpdateSerializer,
-    ChangePasswordSerializer
+    UserLoginSerializer,
+    UserRegistrationSerializer,
+    UserSerializer,
 )
 
 
@@ -16,7 +16,7 @@ class UserRegistrationSerializerTest(TestCase):
             "email": "newuser@example.com",
             "full_name": "New User",
             "phone_number": "0712345678",
-            "password": "strongpass123"
+            "password": "strongpass123",
         }
         serializer = UserRegistrationSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
@@ -25,12 +25,7 @@ class UserRegistrationSerializerTest(TestCase):
         self.assertTrue(user.check_password(data["password"]))
 
     def test_missing_fields(self):
-        data = {
-            "email": "",
-            "full_name": "",
-            "phone_number": "",
-            "password": ""
-        }
+        data = {"email": "", "full_name": "", "phone_number": "", "password": ""}
         serializer = UserRegistrationSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("email", serializer.errors)
@@ -45,20 +40,20 @@ class UserLoginSerializerTest(TestCase):
             email="login@example.com",
             full_name="Login Test",
             phone_number="0700000000",
-            password="loginpass"
+            password="loginpass",
         )
         self.factory = RequestFactory()
 
     def test_valid_login(self):
         data = {"email": "login@example.com", "password": "loginpass"}
-        request = self.factory.post('/api/login/', data)
+        request = self.factory.post("/api/login/", data)
         serializer = UserLoginSerializer(data=data, context={"request": request})
         self.assertTrue(serializer.is_valid(), serializer.errors)
         self.assertEqual(serializer.validated_data["user"], self.user)
 
     def test_invalid_login(self):
         data = {"email": "login@example.com", "password": "wrongpass"}
-        request = self.factory.post('/api/login/', data)
+        request = self.factory.post("/api/login/", data)
         serializer = UserLoginSerializer(data=data, context={"request": request})
         self.assertFalse(serializer.is_valid())
         self.assertIn("detail", serializer.errors)
@@ -70,7 +65,7 @@ class UserSerializerTest(TestCase):
             email="serialize@example.com",
             full_name="Serialized",
             phone_number="0700999999",
-            password="serializepass"
+            password="serializepass",
         )
 
     def test_serialize_user(self):
@@ -85,7 +80,7 @@ class CustomUserUpdateSerializerTest(TestCase):
             email="update@example.com",
             full_name="Updatable User",
             phone_number="0700001111",
-            password="updatepass"
+            password="updatepass",
         )
 
     def test_valid_update(self):
@@ -93,7 +88,7 @@ class CustomUserUpdateSerializerTest(TestCase):
             "username": "new_username",
             "full_name": "Updated Name",
             "phone_number": "0700002222",
-            "date_of_birth": "1995-01-01"
+            "date_of_birth": "1995-01-01",
         }
         serializer = CustomUserUpdateSerializer(instance=self.user, data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
@@ -106,7 +101,7 @@ class CustomUserUpdateSerializerTest(TestCase):
             full_name="Taken User",
             phone_number="0711111111",
             password="pass123",
-            username="takenuser"
+            username="takenuser",
         )
         self.user.username = "original"
         self.user.save()
@@ -123,28 +118,32 @@ class ChangePasswordSerializerTest(TestCase):
             email="changepass@example.com",
             full_name="Change Pass",
             phone_number="0712340000",
-            password="oldpass123"
+            password="oldpass123",
         )
         self.factory = RequestFactory()
-        self.request = self.factory.post('/api/change-password/')
+        self.request = self.factory.post("/api/change-password/")
         self.request.user = self.user
 
     def test_passwords_match_and_old_password_valid(self):
         data = {
             "old_password": "oldpass123",
             "new_password": "newpass456",
-            "confirm_password": "newpass456"
+            "confirm_password": "newpass456",
         }
-        serializer = ChangePasswordSerializer(data=data, context={"request": self.request})
+        serializer = ChangePasswordSerializer(
+            data=data, context={"request": self.request}
+        )
         self.assertTrue(serializer.is_valid())
 
     def test_passwords_dont_match(self):
         data = {
             "old_password": "oldpass123",
             "new_password": "newpass456",
-            "confirm_password": "different"
+            "confirm_password": "different",
         }
-        serializer = ChangePasswordSerializer(data=data, context={"request": self.request})
+        serializer = ChangePasswordSerializer(
+            data=data, context={"request": self.request}
+        )
         self.assertFalse(serializer.is_valid())
         self.assertIn("non_field_errors", serializer.errors)
 
@@ -152,8 +151,10 @@ class ChangePasswordSerializerTest(TestCase):
         data = {
             "old_password": "wrongpass",
             "new_password": "newpass456",
-            "confirm_password": "newpass456"
+            "confirm_password": "newpass456",
         }
-        serializer = ChangePasswordSerializer(data=data, context={"request": self.request})
+        serializer = ChangePasswordSerializer(
+            data=data, context={"request": self.request}
+        )
         self.assertFalse(serializer.is_valid())
         self.assertIn("old_password", serializer.errors)

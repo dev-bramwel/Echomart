@@ -1,0 +1,7 @@
+# Exclude Django migrations
+extend-exclude = ["*/migrations/*"]
+
+[lint]
+# Ignore class-attribute mutability warnings (common in DRF views/serializers)
+# and executable-bit warnings (common in Windows environment files)
+ignore = ["RUF012", "EXE002"]

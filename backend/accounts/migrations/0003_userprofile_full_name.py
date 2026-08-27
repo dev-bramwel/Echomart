@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0002_alter_customuser_options_alter_customuser_managers_and_more'),
+        (
+            "accounts",
+            "0002_alter_customuser_options_alter_customuser_managers_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userprofile',
-            name='full_name',
+            model_name="userprofile",
+            name="full_name",
             field=models.CharField(blank=True, max_length=255),
         ),
     ]

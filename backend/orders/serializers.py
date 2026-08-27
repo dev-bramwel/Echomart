@@ -1,21 +1,35 @@
 from rest_framework import serializers
-from .models import Cart, CartItem, Order, OrderItem, ShippingMethod
-from products.serializers import ProductListSerializer, ProductVariantSerializer
+
 from products.models import Product, ProductVariant
+from products.serializers import ProductListSerializer, ProductVariantSerializer
+
+from .models import Cart, CartItem, Order, OrderItem, ShippingMethod
+
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductListSerializer(read_only=True)
     variant = ProductVariantSerializer(read_only=True)
     product_id = serializers.IntegerField(write_only=True)
-    variant_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    variant_id = serializers.IntegerField(
+        write_only=True, required=False, allow_null=True
+    )
     subtotal = serializers.ReadOnlyField()
     unit_price = serializers.ReadOnlyField()
-    
+
     class Meta:
         model = CartItem
-        fields = ['id', 'product', 'variant', 'product_id', 'variant_id', 
-                 'quantity', 'unit_price', 'subtotal', 'created_at']
-        read_only_fields = ['created_at']
+        fields = [
+            "id",
+            "product",
+            "variant",
+            "product_id",
+            "variant_id",
+            "quantity",
+            "unit_price",
+            "subtotal",
+            "created_at",
+        ]
+        read_only_fields = ["created_at"]
 
     def validate_product_id(self, value):
         try:
@@ -32,14 +46,23 @@ class CartItemSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Product variant not found")
         return value
 
+
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
     total_items = serializers.ReadOnlyField()
     total_price = serializers.ReadOnlyField()
-    
+
     class Meta:
         model = Cart
-        fields = ['id', 'items', 'total_items', 'total_price', 'created_at', 'updated_at']
+        fields = [
+            "id",
+            "items",
+            "total_items",
+            "total_price",
+            "created_at",
+            "updated_at",
+        ]
+
 
 class AddToCartSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
@@ -53,37 +76,59 @@ class AddToCartSerializer(serializers.Serializer):
             raise serializers.ValidationError("Product not found or inactive")
         return value
 
+
 class UpdateCartItemSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(min_value=0)
+
 
 class ShippingMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingMethod
-        fields = ['id', 'name', 'description', 'cost', 'estimated_days']
+        fields = ["id", "name", "description", "cost", "estimated_days"]
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductListSerializer(read_only=True)
     variant = ProductVariantSerializer(read_only=True)
-    
+
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'variant', 'quantity', 'unit_price', 'total_price']
+        fields = ["id", "product", "variant", "quantity", "unit_price", "total_price"]
+
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = Order
-        fields = ['id', 'order_number', 'status', 'subtotal', 'tax_amount', 
-                 'shipping_cost', 'discount_amount', 'total_amount', 'items',
-                 'shipping_first_name', 'shipping_last_name', 'shipping_email',
-                 'shipping_phone', 'shipping_address', 'shipping_city', 
-                 'shipping_country', 'shipping_postal_code', 'created_at', 
-                 'updated_at', 'shipped_at', 'delivered_at']
+        fields = [
+            "id",
+            "order_number",
+            "status",
+            "subtotal",
+            "tax_amount",
+            "shipping_cost",
+            "discount_amount",
+            "total_amount",
+            "items",
+            "shipping_first_name",
+            "shipping_last_name",
+            "shipping_email",
+            "shipping_phone",
+            "shipping_address",
+            "shipping_city",
+            "shipping_country",
+            "shipping_postal_code",
+            "created_at",
+            "updated_at",
+            "shipped_at",
+            "delivered_at",
+        ]
+
 
 class CreateOrderSerializer(serializers.Serializer):
     shipping_method_id = serializers.IntegerField()
-    
+
     # Shipping Address
     shipping_first_name = serializers.CharField(max_length=50)
     shipping_last_name = serializers.CharField(max_length=50)
@@ -93,7 +138,7 @@ class CreateOrderSerializer(serializers.Serializer):
     shipping_city = serializers.CharField(max_length=100)
     shipping_country = serializers.CharField(max_length=100)
     shipping_postal_code = serializers.CharField(max_length=20)
-    
+
     # Billing Address
     billing_first_name = serializers.CharField(max_length=50)
     billing_last_name = serializers.CharField(max_length=50)
@@ -103,7 +148,7 @@ class CreateOrderSerializer(serializers.Serializer):
     billing_city = serializers.CharField(max_length=100)
     billing_country = serializers.CharField(max_length=100)
     billing_postal_code = serializers.CharField(max_length=20)
-    
+
     use_shipping_for_billing = serializers.BooleanField(default=False)
 
     def validate_shipping_method_id(self, value):
