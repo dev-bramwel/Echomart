@@ -19,3 +19,4 @@ sentry-sdk==2.19.2
 requests==2.32.3
 python-slugify==8.0.4
 gunicorn==23.0.0
+python-dotenv
