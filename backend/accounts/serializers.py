@@ -4,6 +4,52 @@ from rest_framework import serializers
 from .models import CustomUser, UserProfile
 
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    # User model fields
+    username = serializers.CharField(
+        source="user.username", required=False, allow_blank=True
+    )
+    full_name = serializers.CharField(source="user.full_name", read_only=True)
+    phone_number = serializers.CharField(source="user.phone_number", required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            "username",
+            "full_name",
+            "phone_number",
+            "bio",
+            "avatar",
+            "address",
+            "city",
+            "country",
+            "postal_code",
+        ]
+
+    def validate_username(self, value):
+        if value == "":
+            return None
+        user = (
+            CustomUser.objects.filter(username=value)
+            .exclude(id=self.instance.user.id)
+            .first()
+        )
+        if user:
+            raise serializers.ValidationError("This username is already taken.")
+        return value
+
+    def update(self, instance, validated_data):
+        # Extract nested user data
+        user_data = validated_data.pop("user", {})
+
+        # Update user fields
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+        instance.user.save()
+
+        # Update profile fields
+        return super().update(instance, validated_data)
+
 # Main serializer for outputting full user info
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(read_only=True)
@@ -82,52 +128,6 @@ class UserLoginSerializer(serializers.Serializer):
         attrs["user"] = user
         return attrs
 
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    # User model fields
-    username = serializers.CharField(
-        source="user.username", required=False, allow_blank=True
-    )
-    full_name = serializers.CharField(source="user.full_name", read_only=True)
-    phone_number = serializers.CharField(source="user.phone_number", required=False)
-
-    class Meta:
-        model = UserProfile
-        fields = [
-            "username",
-            "full_name",
-            "phone_number",
-            "bio",
-            "avatar",
-            "address",
-            "city",
-            "country",
-            "postal_code",
-        ]
-
-    def validate_username(self, value):
-        if value == "":
-            return None
-        user = (
-            CustomUser.objects.filter(username=value)
-            .exclude(id=self.instance.user.id)
-            .first()
-        )
-        if user:
-            raise serializers.ValidationError("This username is already taken.")
-        return value
-
-    def update(self, instance, validated_data):
-        # Extract nested user data
-        user_data = validated_data.pop("user", {})
-
-        # Update user fields
-        for attr, value in user_data.items():
-            setattr(instance.user, attr, value)
-        instance.user.save()
-
-        # Update profile fields
-        return super().update(instance, validated_data)
 
 
 # Serializer for changing password
