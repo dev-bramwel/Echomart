@@ -104,7 +104,6 @@ class UserProfileUpdateViewTest(APITestCase):
             phone_number="0711999888",
             password="updateprofilepass",
         )
-        UserProfile.objects.create(user=self.user)
 
         # 👇 Generate token
         refresh = RefreshToken.for_user(self.user)
@@ -120,9 +119,7 @@ class UserProfileUpdateViewTest(APITestCase):
     def test_update_profile(self):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
         data = {"bio": "Updated Bio 2", "city": "Nairobi", "country": "Kenya"}
-        response = self.client.patch(
-            reverse("accounts:profile-update"), data, format="json"
-        )
+        response = self.client.patch(reverse("accounts:profile"), data, format="json")
         print("RESPONSE DATA:", response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["bio"], "Updated Bio 2")

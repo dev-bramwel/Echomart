@@ -11,6 +11,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
     )
     full_name = serializers.CharField(source="user.full_name", read_only=True)
     phone_number = serializers.CharField(source="user.phone_number", required=False)
+    email = serializers.EmailField(
+        source="user.email",
+        read_only=True,
+    )
 
     class Meta:
         model = UserProfile
@@ -24,6 +28,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "city",
             "country",
             "postal_code",
+            "email",
         ]
 
     def validate_username(self, value):
@@ -80,6 +85,40 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class CustomUserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = [
+            "username",
+            "full_name",
+            "phone_number",
+            "date_of_birth",
+        ]
+
+    def validate_username(self, value):
+        if value == "":
+            return None
+
+        user = (
+            CustomUser.objects.filter(username=value)
+            .exclude(id=self.instance.id)
+            .first()
+        )
+
+        if user:
+            raise serializers.ValidationError("This username is already taken.")
+
+        return value
+
+    def validate_full_name(self, value):
+        value = " ".join(value.strip().split())
+
+        if not value:
+            raise serializers.ValidationError("Full name is required.")
+
+        return value
 
 
 # Serializer for registering new users

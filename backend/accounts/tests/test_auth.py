@@ -29,7 +29,7 @@ class SimpleJWTTokenTest(TestCase):
     def test_generate_and_validate_access_token(self):
         # Validate token manually
         token = AccessToken(str(self.access))
-        self.assertEqual(token["user_id"], self.user.id)
+        self.assertEqual(int(token["user_id"]), self.user.id)
 
     def test_refresh_token_returns_new_access(self):
         # Simulate refreshing
