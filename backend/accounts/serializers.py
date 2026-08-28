@@ -50,6 +50,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # Update profile fields
         return super().update(instance, validated_data)
 
+
 # Main serializer for outputting full user info
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(read_only=True)
@@ -127,7 +128,6 @@ class UserLoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
-
 
 
 # Serializer for changing password
