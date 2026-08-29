@@ -10,7 +10,13 @@ User = get_user_model()
 
 class VendorAPITest(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testvendor", password="pass123")
+        self.user = User.objects.create_user(
+            username="testvendor",
+            email="testvendor@example.com",
+            full_name="Test Vendor",
+            phone_number="0700000001",
+            password="pass123",
+        )
         self.client = APIClient()
 
         # Use JWT token

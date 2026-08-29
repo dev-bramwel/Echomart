@@ -10,7 +10,11 @@ User = get_user_model()
 class VendorModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            username="vendoruser", password="securepass"
+            username="vendoruser",
+            email="vendoruser@example.com",
+            full_name="Vendor User",
+            phone_number="0700000002",
+            password="securepass",
         )
         self.vendor = Vendor.objects.create(
             user=self.user,
@@ -61,7 +65,13 @@ class VendorModelTest(TestCase):
 
 class VendorBankDetailsModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="vendorbank", password="bankpass")
+        self.user = User.objects.create_user(
+            username="vendorbank",
+            email="vendorbank@example.com",
+            full_name="Vendor Bank User",
+            phone_number="0700000003",
+            password="bankpass",
+        )
         self.vendor = Vendor.objects.create(
             user=self.user,
             business_name="Fuel Station X",
