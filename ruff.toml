@@ -1,0 +1,11 @@
+extend-exclude = ["*/migrations/*"]
+
+[lint]
+ignore = [
+    "RUF012", # Mutable class attributes in DRF
+    "EXE002", # Executable permissions without shebang
+    "BLE001", # Blind exception catching
+    "F841",   # Unused local variables
+    "B017",   # Blind assertions in tests
+    "RUF059", # Unused unpacked variables
+]

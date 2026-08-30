@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_userprofile_phone_number_alter_userprofile_full_name'),
+        ("accounts", "0004_userprofile_phone_number_alter_userprofile_full_name"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='userprofile',
-            name='phone_number',
+            model_name="userprofile",
+            name="phone_number",
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='phone_number',
+            model_name="customuser",
+            name="phone_number",
             field=models.CharField(blank=True, max_length=15, null=True, unique=True),
         ),
     ]

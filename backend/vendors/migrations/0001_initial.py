@@ -15,32 +15,65 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Vendor',
+            name="Vendor",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('business_name', models.CharField(max_length=200)),
-                ('business_description', models.TextField()),
-                ('business_logo', models.ImageField(blank=True, null=True, upload_to='vendor_logos/')),
-                ('business_address', models.TextField()),
-                ('business_phone', models.CharField(max_length=15)),
-                ('business_email', models.EmailField(max_length=254)),
-                ('website', models.URLField(blank=True)),
-                ('is_verified', models.BooleanField(default=False)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='vendor_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("business_name", models.CharField(max_length=200)),
+                ("business_description", models.TextField()),
+                (
+                    "business_logo",
+                    models.ImageField(blank=True, null=True, upload_to="vendor_logos/"),
+                ),
+                ("business_address", models.TextField()),
+                ("business_phone", models.CharField(max_length=15)),
+                ("business_email", models.EmailField(max_length=254)),
+                ("website", models.URLField(blank=True)),
+                ("is_verified", models.BooleanField(default=False)),
+                ("is_active", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="vendor_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='VendorBankDetails',
+            name="VendorBankDetails",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bank_name', models.CharField(max_length=100)),
-                ('account_name', models.CharField(max_length=200)),
-                ('account_number', models.CharField(max_length=50)),
-                ('routing_number', models.CharField(blank=True, max_length=50)),
-                ('vendor', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='bank_details', to='vendors.vendor')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bank_name", models.CharField(max_length=100)),
+                ("account_name", models.CharField(max_length=200)),
+                ("account_number", models.CharField(max_length=50)),
+                ("routing_number", models.CharField(blank=True, max_length=50)),
+                (
+                    "vendor",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bank_details",
+                        to="vendors.vendor",
+                    ),
+                ),
             ],
         ),
     ]

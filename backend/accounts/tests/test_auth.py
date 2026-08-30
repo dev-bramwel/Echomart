@@ -1,15 +1,15 @@
-from django.test import TestCase, RequestFactory
-from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, TokenError
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.test import force_authenticate, APIRequestFactory
-
 from datetime import timedelta
+
+from django.contrib.auth import get_user_model
+from django.test import TestCase
 from django.utils import timezone
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.test import APIRequestFactory
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
 
 User = get_user_model()
 
@@ -21,7 +21,7 @@ class SimpleJWTTokenTest(TestCase):
             email="jwtuser@example.com",
             full_name="JWT User",
             phone_number="0712345678",
-            password="jwtpass123"
+            password="jwtpass123",
         )
         self.refresh = RefreshToken.for_user(self.user)
         self.access = self.refresh.access_token
@@ -29,7 +29,7 @@ class SimpleJWTTokenTest(TestCase):
     def test_generate_and_validate_access_token(self):
         # Validate token manually
         token = AccessToken(str(self.access))
-        self.assertEqual(token['user_id'], self.user.id)
+        self.assertEqual(int(token["user_id"]), self.user.id)
 
     def test_refresh_token_returns_new_access(self):
         # Simulate refreshing
@@ -52,7 +52,7 @@ class JWTAuthenticationTest(TestCase):
             email="authtest@example.com",
             full_name="Auth Tester",
             phone_number="0700111222",
-            password="authpass"
+            password="authpass",
         )
         self.refresh = RefreshToken.for_user(self.user)
         self.access = str(self.refresh.access_token)
@@ -61,7 +61,7 @@ class JWTAuthenticationTest(TestCase):
 
     def test_valid_token_authenticates_user(self):
         request = self.factory.get("/secure-endpoint/")
-        request.META['HTTP_AUTHORIZATION'] = f"Bearer {self.access}"
+        request.META["HTTP_AUTHORIZATION"] = f"Bearer {self.access}"
         user_auth_tuple = self.auth.authenticate(request)
         self.assertIsNotNone(user_auth_tuple)
         user, _ = user_auth_tuple
@@ -73,7 +73,7 @@ class JWTAuthenticationTest(TestCase):
 
     def test_invalid_token_raises_auth_error(self):
         request = self.factory.get("/secure-endpoint/")
-        request.META['HTTP_AUTHORIZATION'] = "Bearer invalid.token.string"
+        request.META["HTTP_AUTHORIZATION"] = "Bearer invalid.token.string"
         with self.assertRaises(AuthenticationFailed):
             self.auth.authenticate(request)
 
@@ -84,7 +84,7 @@ class PermissionEnforcementTest(TestCase):
             email="permuser@example.com",
             full_name="Permission User",
             phone_number="0799999999",
-            password="perm123"
+            password="perm123",
         )
         self.refresh = RefreshToken.for_user(self.user)
         self.access = str(self.refresh.access_token)
@@ -93,7 +93,9 @@ class PermissionEnforcementTest(TestCase):
     def test_is_authenticated_blocks_unauthenticated(self):
         class SecureView(APIView):
             permission_classes = [IsAuthenticated]
-            def get(self, request): return Response({"ok": True})
+
+            def get(self, request):
+                return Response({"ok": True})
 
         view = SecureView.as_view()
         request = self.factory.get("/secure-endpoint/")
@@ -103,10 +105,12 @@ class PermissionEnforcementTest(TestCase):
     def test_is_authenticated_allows_authenticated(self):
         class SecureView(APIView):
             permission_classes = [IsAuthenticated]
-            def get(self, request): return Response({"ok": True})
+
+            def get(self, request):
+                return Response({"ok": True})
 
         request = self.factory.get("/secure-endpoint/")
-        request.META['HTTP_AUTHORIZATION'] = f"Bearer {self.access}"
+        request.META["HTTP_AUTHORIZATION"] = f"Bearer {self.access}"
         view = SecureView.as_view()
         response = view(request)
         self.assertEqual(response.status_code, 200)
